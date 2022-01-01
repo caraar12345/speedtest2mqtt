@@ -1,5 +1,6 @@
 #!/bin/bash
-CRON=${CRON:-0 0,6,12,18 * * *}
+CONFIG_PATH="/data/options.json"
+CRON=${`jq --raw-output '.cron // empty'`:-0 * * * *}
 echo "speedtest2mqtt has been started "
 
 declare | grep -Ev 'BASHOPTS|BASH_VERSINFO|EUID|PPID|SHELLOPTS|UID' > /var/tmp/container.env

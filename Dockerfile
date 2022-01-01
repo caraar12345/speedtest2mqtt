@@ -1,5 +1,5 @@
-FROM alpine:3.14.2
-ARG TARGETARCH
+ARG BUILD_FROM
+FROM ${BUILD_FROM}
 
 COPY entrypoint.sh speedtest2mqtt.sh /opt/
 COPY crontab.yml /home/foo/
