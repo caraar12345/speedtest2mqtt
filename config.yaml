@@ -24,7 +24,7 @@ options:
   cron: "0 * * * *"
 schema:
   mqtt_host: str
-  mqtt_port: int(1, 65535)
+  mqtt_port: "int(1, 65535)"
   mqtt_id: str
   mqtt_topic: str
   mqtt_options: str?
