@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 CONFIG_PATH="/data/options.json"
 export MQTT_HOST="$(jq --raw-output '.mqtt_host // empty' $CONFIG_PATH)"

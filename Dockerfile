@@ -7,7 +7,7 @@ COPY crontab.yml /home/foo/
 RUN addgroup -S foo && adduser -S foo -G foo && \
     chmod +x /opt/speedtest2mqtt.sh /opt/entrypoint.sh && \
     chown foo:foo /home/foo/crontab.yml && \
-    apk --no-cache add bash mosquitto-clients jq python3
+    apk --no-cache add bash mosquitto-clients jq python3 zsh
 
 RUN apk --no-cache add wget --virtual .build-deps && \
     wget https://install.speedtest.net/app/cli/ookla-speedtest-1.1.1-linux-x86_64.tgz -O /var/tmp/speedtest.tar.gz && \
