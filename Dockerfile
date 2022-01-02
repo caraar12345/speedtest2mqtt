@@ -4,12 +4,9 @@ ARG BUILD_ARCH
 FROM ${BUILD_FROM}
 
 COPY entrypoint.sh speedtest2mqtt.sh /opt/
-COPY crontab.yml /home/foo/
+COPY crontab.yml /config/crontab.yml
 
-RUN addgroup -S foo && adduser -S foo -G foo && \
-    chmod +x /opt/speedtest2mqtt.sh /opt/entrypoint.sh && \
-    chown foo:foo /home/foo/crontab.yml && \
-    chown foo:foo /data/options.json && \
+RUN chmod +x /opt/speedtest2mqtt.sh /opt/entrypoint.sh && \
     apk --no-cache add bash mosquitto-clients jq python3 zsh
 
 RUN apk --no-cache add wget --virtual .build-deps && \
@@ -29,6 +26,4 @@ RUN apk --no-cache add gcc musl-dev python3-dev --virtual .build-deps && \
     pip install yacron && \
     apk del --no-cache .build-deps
 
-USER foo
 ENTRYPOINT /opt/entrypoint.sh
-
