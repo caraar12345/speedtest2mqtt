@@ -1,5 +1,5 @@
 name: Ookla Speedtest CLI
-version: 0.0.4
+version: 0.0.5
 slug: ookla-speedtest
 description: Internet speed test sensor using the official speedtest.net CLI client
 arch:
