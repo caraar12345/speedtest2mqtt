@@ -3,9 +3,9 @@ version: 0.0.5
 slug: ookla-speedtest
 description: Internet speed test sensor using the official speedtest.net CLI client
 arch:
+  - i386
   - amd64
-  - arm64
-  - arm
+  - armhf
   - aarch64
 startup: application
 boot: auto
