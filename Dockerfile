@@ -1,5 +1,4 @@
 ARG BUILD_FROM
-ARG TARGETARCH
 FROM ${BUILD_FROM}
 
 COPY entrypoint.sh speedtest2mqtt.sh /opt/
@@ -11,7 +10,6 @@ RUN addgroup -S foo && adduser -S foo -G foo && \
     apk --no-cache add bash mosquitto-clients jq python3
 
 RUN apk --no-cache add wget --virtual .build-deps && \
-    echo "Target Arch $TARGETARCH" && \
     wget https://install.speedtest.net/app/cli/ookla-speedtest-1.1.1-linux-x86_64.tgz -O /var/tmp/speedtest.tar.gz && \
     tar xf /var/tmp/speedtest.tar.gz -C /var/tmp && \
     mv /var/tmp/speedtest /usr/local/bin && \
