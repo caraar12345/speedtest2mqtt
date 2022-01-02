@@ -38,6 +38,10 @@ echo "$(date -Iseconds) jitter = ${jitter} ms"
 
 echo "$(date -Iseconds) sending results to ${MQTT_HOST} as clientID ${MQTT_ID} with options ${MQTT_OPTIONS} using user ${MQTT_USER}"
 
+## /usr/bin/mosquitto_pub -h ${MQTT_HOST} -p ${MQTT_PORT} -r -i ${MQTT_ID} ${MQTT_OPTIONS} -u ${MQTT_USER} -P ${MQTT_PASS} -t ${MQTT_TOPIC}/config -m '{\"name\":\"Speedtest Go\", \"device_class\":\"speedtest\", \"unit_of_measurement\":\"Mbps\", \"state_topic\":\"homeassistant/sensor/speedtest/test\", \"value_template\":\"{{ value_json.download }}\"}'
+/usr/bin/mosquitto_pub -h ${MQTT_HOST} -p ${MQTT_PORT} -r -i ${MQTT_ID} ${MQTT_OPTIONS} -u ${MQTT_USER} -P ${MQTT_PASS} -t ${MQTT_TOPIC}/test -m '{\"download\":\"${download}\", \"upload\":\"${upload}\", \"ping\":\"${ping}\", \"jitter\":\"${jitter}\", \"packetloss\":\"${packetloss}\", \"serverid\":\"${serverid}\", \"servername\":\"${servername}\", \"servercountry\":\"${servercountry}\", \"serverlocation\":\"${serverlocation}\", \"serverhost\":\"${serverhost}\", \"timestamp\":\"${timestamp}\"}'
+## {\"download\":${download},\"upload\":${upload},\"ping\":${ping},\"jitter\":${jitter},\"packetloss\":${packetloss},\"serverid\":${serverid},\"servername\":\"${servername}\",\"servercountry\":\"${servercountry}\",\"serverlocation\":\"${serverlocation}\",\"serverhost\":\"${serverhost}\",\"timestamp\":\"${timestamp}\"}"
+
 /usr/bin/mosquitto_pub -h ${MQTT_HOST} -p ${MQTT_PORT} -r -i ${MQTT_ID} ${MQTT_OPTIONS} -u ${MQTT_USER} -P ${MQTT_PASS} -t ${MQTT_TOPIC}/download -m "${download}"
 /usr/bin/mosquitto_pub -h ${MQTT_HOST} -p ${MQTT_PORT} -r -i ${MQTT_ID} ${MQTT_OPTIONS} -u ${MQTT_USER} -P ${MQTT_PASS} -t ${MQTT_TOPIC}/downraw -m "${downraw}"
 /usr/bin/mosquitto_pub -h ${MQTT_HOST} -p ${MQTT_PORT} -r -i ${MQTT_ID} ${MQTT_OPTIONS} -u ${MQTT_USER} -P ${MQTT_PASS} -t ${MQTT_TOPIC}/upload -m "${upload}"
