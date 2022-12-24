@@ -8,7 +8,7 @@ arch:
   - armhf
   - aarch64
 startup: application
-image: ghcr.io/caraar12345/home-assistant-addons/speedtest-mqtt:1.0.0-{arch}
+image: "ghcr.io/caraar12345/home-assistant-addons/speedtest-mqtt:1.0.0-{arch}"
 boot: auto
 icon: logo.png
 logo: logo.png
