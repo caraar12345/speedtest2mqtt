@@ -13,10 +13,10 @@ RUN apk --no-cache add wget --virtual .build-deps
 
 ARG BUILD_ARCH
 RUN echo "Target Arch $BUILD_ARCH" && \
-    if [[ $BUILD_ARCH = 'i386' ]]; then wget https://install.speedtest.net/app/cli/ookla-speedtest-1.1.1-linux-i386.tgz -O /var/tmp/speedtest.tar.gz; fi && \
-    if [[ $BUILD_ARCH = 'amd64' ]]; then wget https://install.speedtest.net/app/cli/ookla-speedtest-1.1.1-linux-x86_64.tgz -O /var/tmp/speedtest.tar.gz; fi && \
-    if [[ $BUILD_ARCH = 'armhf' ]]; then wget https://install.speedtest.net/app/cli/ookla-speedtest-1.1.1-linux-armhf.tgz -O /var/tmp/speedtest.tar.gz; fi && \
-    if [[ $BUILD_ARCH = 'aarch64' ]]; then wget https://install.speedtest.net/app/cli/ookla-speedtest-1.1.1-linux-aarch64.tgz -O /var/tmp/speedtest.tar.gz; fi && \
+    if [[ $BUILD_ARCH = 'i386' ]]; then wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-i386.tgz -O /var/tmp/speedtest.tar.gz; fi && \
+    if [[ $BUILD_ARCH = 'amd64' ]]; then wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz -O /var/tmp/speedtest.tar.gz; fi && \
+    if [[ $BUILD_ARCH = 'armhf' ]]; then wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz -O /var/tmp/speedtest.tar.gz; fi && \
+    if [[ $BUILD_ARCH = 'aarch64' ]]; then wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-aarch64.tgz -O /var/tmp/speedtest.tar.gz; fi && \
     tar xf /var/tmp/speedtest.tar.gz -C /var/tmp && \
     mv /var/tmp/speedtest /usr/local/bin && \
     rm /var/tmp/speedtest.tar.gz && \

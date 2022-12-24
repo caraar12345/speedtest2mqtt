@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"name": "ookla-speedtest-cli",
+			"path": "../home-assistant-integrations/ookla-speedtest-cli"
+		},
+		{
+			"name": "home-assistant-addons",
+			"path": "../home-assistant-addons"
+		},
+		{
+			"path": "../ookla-speedtest"
+		},
+		{
+			"name": "speedtest2mqtt",
+			"path": "."
+		}
+	],
+	"settings": {}
+}
