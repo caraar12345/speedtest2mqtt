@@ -1,5 +1,5 @@
 name: Ookla Speedtest CLI
-version: 0.1.0
+version: 1.0.0
 slug: ookla-speedtest
 description: Internet speed test sensor using the official speedtest.net CLI client
 arch:
@@ -12,21 +12,13 @@ boot: auto
 icon: logo.png
 logo: logo.png
 apparmor: true
+services:
+  - mqtt:need
 options:
-  mqtt_host: null
-  mqtt_port: 1883
-  mqtt_id: "speedtest-cli-hass"
   mqtt_topic: "homeassistant/speedtest"
   mqtt_options: ""
-  mqtt_username: ""
-  mqtt_password: ""
   cron: "0 * * * *"
 schema:
-  mqtt_host: str
-  mqtt_port: port
-  mqtt_id: str
   mqtt_topic: str
   mqtt_options: str?
-  mqtt_username: str?
-  mqtt_password: password?
   cron: str

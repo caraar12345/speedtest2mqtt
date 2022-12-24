@@ -1,13 +1,14 @@
 #!/bin/zsh
 
 CONFIG_PATH="/data/options.json"
-export MQTT_HOST="$(jq --raw-output '.mqtt_host // empty' $CONFIG_PATH)"
-export MQTT_PORT="$(jq --raw-output '.mqtt_port // empty' $CONFIG_PATH)"
-export MQTT_ID="$(jq --raw-output '.mqtt_id // empty' $CONFIG_PATH)"
+export MQTT_HOST=$(bashio::services mqtt "host")
+export MQTT_PORT=$(bashio::services mqtt "port")
+export MQTT_ID="speedtest-mqtt-hass"
 export MQTT_TOPIC="$(jq --raw-output '.mqtt_topic // empty' $CONFIG_PATH)"
 export MQTT_OPTIONS="$(jq --raw-output '.mqtt_options // empty' $CONFIG_PATH)"
-export MQTT_USER="$(jq --raw-output '.mqtt_username // empty' $CONFIG_PATH)"
-export MQTT_PASS="$(jq --raw-output '.mqtt_password // empty' $CONFIG_PATH)"
+export MQTT_USER=$(bashio::services mqtt "username")
+export MQTT_PASS=$(bashio::services mqtt "password")
+
 
 file=~/ookla.json
 

@@ -1,4 +1,4 @@
-ARG BUILD_FROM
+ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base
 FROM ${BUILD_FROM}
 
 COPY entrypoint.sh speedtest2mqtt.sh /opt/
