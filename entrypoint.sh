@@ -1,6 +1,6 @@
 #!/usr/bin/env bashio
-CONFIG_PATH="/data/options.json"
-CRON=${$(jq --raw-output '.cron // empty' $CONFIG_PATH):-"0 * * * *"}
+CRON_CONFIG=$(bashio::config 'cron')
+CRON=${CRON_CONFIG:="0 * * * *"}
 echo "speedtest2mqtt has been started"
 
 declare | grep -Ev 'BASHOPTS|BASH_VERSINFO|EUID|PPID|SHELLOPTS|UID|undefined' > /var/tmp/container.env
