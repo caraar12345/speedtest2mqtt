@@ -16,7 +16,8 @@ COPY entrypoint.sh speedtest2mqtt.sh /opt/
 COPY crontab.yml /config/crontab.yml
 
 RUN chmod +x /opt/speedtest2mqtt.sh /opt/entrypoint.sh && \
-    apk --no-cache add mosquitto-clients jq python3 gcc musl-dev python3-dev --virtual .build-deps && \
+    apk --no-cache add gcc musl-dev python3-dev --virtual .build-deps && \
+    apk --no-cache add mosquitto-clients jq python3 && \
     echo "Target Arch: $BUILD_ARCH" && \
     if [ $BUILD_ARCH = '386' ]; then wget ${SPEEDTEST_URL}-i386.tgz -O /var/tmp/speedtest.tar.gz; fi && \
     if [ $BUILD_ARCH = 'amd64' ]; then wget ${SPEEDTEST_URL}-x86_64.tgz -O /var/tmp/speedtest.tar.gz; fi && \
@@ -29,7 +30,7 @@ RUN chmod +x /opt/speedtest2mqtt.sh /opt/entrypoint.sh && \
     python3 -m venv yacronenv && \
     . yacronenv/bin/activate && \
     pip install yacron && \
-    apk del --no-cache gcc musl-dev python3-dev .build-deps
+    apk del --no-cache .build-deps
 
 ENTRYPOINT /opt/entrypoint.sh
 
