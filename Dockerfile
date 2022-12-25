@@ -16,21 +16,16 @@ COPY entrypoint.sh speedtest2mqtt.sh /opt/
 COPY crontab.yml /config/crontab.yml
 
 RUN chmod +x /opt/speedtest2mqtt.sh /opt/entrypoint.sh && \
-    apk --no-cache add mosquitto-clients jq python3 zsh wget
-
-SHELL ["/bin/zsh", "-c"]
-
-RUN echo "Target Arch $BUILD_ARCH" && \
-    if [[ $BUILD_ARCH = '386' ]]; then wget ${SPEEDTEST_URL}-i386.tgz -O /var/tmp/speedtest.tar.gz; fi && \
-    if [[ $BUILD_ARCH = 'amd64' ]]; then wget ${SPEEDTEST_URL}-x86_64.tgz -O /var/tmp/speedtest.tar.gz; fi && \
-    if [[ $BUILD_ARCH = 'arm' ]] && [[ $TARGETVARIANT = 'v6' ]]; then wget ${SPEEDTEST_URL}-armel.tgz -O /var/tmp/speedtest.tar.gz; fi && \
-    if [[ $BUILD_ARCH = 'arm' ]] && [[ $TARGETVARIANT = 'v7' ]]; then wget ${SPEEDTEST_URL}-armhf.tgz -O /var/tmp/speedtest.tar.gz; fi && \
-    if [[ $BUILD_ARCH = 'arm64' ]]; then wget ${SPEEDTEST_URL}-aarch64.tgz -O /var/tmp/speedtest.tar.gz; fi && \
+    apk --no-cache add mosquitto-clients jq python3 gcc musl-dev python3-dev --virtual .build-deps && \
+    echo "Target Arch: $BUILD_ARCH" && \
+    if [ $BUILD_ARCH = '386' ]; then wget ${SPEEDTEST_URL}-i386.tgz -O /var/tmp/speedtest.tar.gz; fi && \
+    if [ $BUILD_ARCH = 'amd64' ]; then wget ${SPEEDTEST_URL}-x86_64.tgz -O /var/tmp/speedtest.tar.gz; fi && \
+    if [ $BUILD_ARCH = 'arm' ] && [ $TARGETVARIANT = 'v6' ]; then wget ${SPEEDTEST_URL}-armel.tgz -O /var/tmp/speedtest.tar.gz; fi && \
+    if [ $BUILD_ARCH = 'arm' ] && [ $TARGETVARIANT = 'v7' ]; then wget ${SPEEDTEST_URL}-armhf.tgz -O /var/tmp/speedtest.tar.gz; fi && \
+    if [ $BUILD_ARCH = 'arm64' ]; then wget ${SPEEDTEST_URL}-aarch64.tgz -O /var/tmp/speedtest.tar.gz; fi && \
     tar xf /var/tmp/speedtest.tar.gz -C /var/tmp && \
     mv /var/tmp/speedtest /usr/local/bin && \
-    rm /var/tmp/* 
-
-RUN apk --no-cache add gcc musl-dev python3-dev --virtual .build-deps && \
+    rm /var/tmp/* && \
     python3 -m venv yacronenv && \
     . yacronenv/bin/activate && \
     pip install yacron && \
