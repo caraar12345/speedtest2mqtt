@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env bashio
 CONFIG_PATH="/data/options.json"
 CRON=${$(jq --raw-output '.cron // empty' $CONFIG_PATH):-"0 * * * *"}
 echo "speedtest2mqtt has been started"
