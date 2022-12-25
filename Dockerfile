@@ -31,8 +31,8 @@ RUN echo "Target Arch $BUILD_ARCH" && \
     rm /var/tmp/* 
 
 RUN apk --no-cache add gcc musl-dev python3-dev --virtual .build-deps && \
-    python3 -m venv yacronvenv && \
-    . yacronvenv/bin/activate && \
+    python3 -m venv yacronenv && \
+    . yacronenv/bin/activate && \
     pip install yacron && \
     apk del --no-cache gcc musl-dev python3-dev .build-deps
 
