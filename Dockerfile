@@ -1,32 +1,48 @@
-ARG BUILD_ARCH
-ARG BUILD_FROM=ghcr.io/home-assistant/${BUILD_ARCH}-base
-FROM ${BUILD_FROM}
+ARG BUILD_FROM=ghcr.io/hassio-addons/base:stable
+FROM $BUILD_FROM
+
+ARG TARGETVARIANT
+ARG TARGETARCH
+ARG BUILD_ARCH=$TARGETARCH
+
+ARG BUILD_TIME
+ARG BUILD_REVISION
+ARG BUILD_VERSION
+ARG SPEEDTEST_URL_TEMPLATE
+ARG SPEEDTEST_VERSION
+ARG SPEEDTEST_URL=${SPEEDTEST_URL_TEMPLATE}${SPEEDTEST_VERSION}-linux
 
 COPY entrypoint.sh speedtest2mqtt.sh /opt/
 COPY crontab.yml /config/crontab.yml
 
 RUN chmod +x /opt/speedtest2mqtt.sh /opt/entrypoint.sh && \
-    apk --no-cache add mosquitto-clients jq python3 zsh
+    apk --no-cache add mosquitto-clients jq python3 zsh wget
 
 SHELL ["/bin/zsh", "-c"]
 
-RUN apk --no-cache add wget --virtual .build-deps
-
-ARG BUILD_ARCH
 RUN echo "Target Arch $BUILD_ARCH" && \
-    if [[ $BUILD_ARCH = 'i386' ]]; then wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-i386.tgz -O /var/tmp/speedtest.tar.gz; fi && \
-    if [[ $BUILD_ARCH = 'amd64' ]]; then wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz -O /var/tmp/speedtest.tar.gz; fi && \
-    if [[ $BUILD_ARCH = 'armhf' ]]; then wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-armhf.tgz -O /var/tmp/speedtest.tar.gz; fi && \
-    if [[ $BUILD_ARCH = 'aarch64' ]]; then wget https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-aarch64.tgz -O /var/tmp/speedtest.tar.gz; fi && \
+    if [[ $BUILD_ARCH = '386' ]]; then wget ${SPEEDTEST_URL}-i386.tgz -O /var/tmp/speedtest.tar.gz; fi && \
+    if [[ $BUILD_ARCH = 'amd64' ]]; then wget ${SPEEDTEST_URL}-x86_64.tgz -O /var/tmp/speedtest.tar.gz; fi && \
+    if [[ $BUILD_ARCH = 'arm' ]] && [[ $TARGETVARIANT = 'v6' ]]; then wget ${SPEEDTEST_URL}-armel.tgz -O /var/tmp/speedtest.tar.gz; fi && \
+    if [[ $BUILD_ARCH = 'arm' ]] && [[ $TARGETVARIANT = 'v7' ]]; then wget ${SPEEDTEST_URL}-armhf.tgz -O /var/tmp/speedtest.tar.gz; fi && \
+    if [[ $BUILD_ARCH = 'arm64' ]]; then wget ${SPEEDTEST_URL}-aarch64.tgz -O /var/tmp/speedtest.tar.gz; fi && \
     tar xf /var/tmp/speedtest.tar.gz -C /var/tmp && \
     mv /var/tmp/speedtest /usr/local/bin && \
-    rm /var/tmp/speedtest.tar.gz && \
-    apk del --no-cache .build-deps
+    rm /var/tmp/* 
 
 RUN apk --no-cache add gcc musl-dev python3-dev --virtual .build-deps && \
-    python3 -m venv yacronenv && \
-    . yacronenv/bin/activate && \
+    python3 -m venv yacronvenv && \
+    . yacronvenv/bin/activate && \
     pip install yacron && \
-    apk del --no-cache .build-deps
+    apk del --no-cache gcc musl-dev python3-dev .build-deps
 
 ENTRYPOINT /opt/entrypoint.sh
+
+LABEL org.opencontainers.artifact.created $BUILD_TIME
+LABEL org.opencontainers.image.created $BUILD_TIME
+LABEL org.opencontainers.image.source https://github.com/caraar12345/home-assistant-addons
+LABEL org.opencontinaers.image.authors "Aaron Carson <aaron@aaroncarson.co.uk>"
+LABEL org.opencontainers.image.version $BUILD_VERSION
+LABEL org.opencontainers.image.licenses "MIT"
+LABEL org.opencontainers.image.revision $BUILD_REVISION
+LABEL org.opencontainers.artifact.description "Ookla Speedtest CLI as a Home Assistant Add-on with the output being published to MQTT."
