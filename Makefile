@@ -22,7 +22,7 @@ ADDON_NAME ?= speedtest-mqtt
 # the same tag, and Home Assistant never shows users an update. Refuse to
 # push in that case; set FORCE=1 to override deliberately.
 check-version:
-	@if [ "$(FORCE)" != "1" ] && docker manifest inspect ghcr.io/${GITHUB_USERNAME}/${GITHUB_REPO}/${ADDON_NAME}:${_BUILD_ARGS_BUILD_VERSION} >/dev/null 2>&1; then \
+	@if [ "$(FORCE)" != "1" ] && docker buildx imagetools inspect ghcr.io/${GITHUB_USERNAME}/${GITHUB_REPO}/${ADDON_NAME}:${_BUILD_ARGS_BUILD_VERSION} >/dev/null 2>&1; then \
 		echo "error: version ${_BUILD_ARGS_BUILD_VERSION} (from config.yaml) is already published for ${ADDON_NAME}." >&2; \
 		echo "       Bump config.yaml's version before merging, or re-run with FORCE=1 to override." >&2; \
 		exit 1; \
